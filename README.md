@@ -82,7 +82,7 @@ export class AppModule {}
 To initialize a transaction, simply call the `initialize` method from `ChapaService` instance, and pass to it `InitializeOptions` options.
 
 ```typescript
-this.chapaService.initialize({
+await this.chapaService.initialize({
   first_name: 'John',
   last_name: 'Doe',
   email: 'john@gmail.com',
@@ -125,7 +125,7 @@ interface InitializeResponse {
 To verify payment, simply call the `verify` method from `ChapaService` instance, and pass to it `VerifyOptions` options.
 
 ```typescript
-this.chapaService.verify({
+await this.chapaService.verify({
   tx_ref: '02f8a19d-99a5-4598-b90d-3fb5b7a485ab',
 });
 ```
