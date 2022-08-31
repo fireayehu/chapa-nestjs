@@ -4,7 +4,11 @@
   "description": "Chapa SDK for NestJS",
   "author": "Fireayehu Zekarias<fireayehuzekarias@gmail.com>",
   "license": "MIT",
+  "url": "https://github.com/fireayehu/chapa-nestjs#readme",
   "main": "dist/chapa-sdk/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/chapa-client/main.js\"",
     "build": "tsc",
@@ -16,8 +20,15 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fireayehu/chapa-nestjs"
+  },
   "keywords": [
-    "nestjs"
+    "nestjs",
+    "chapa",
+    "chapa-nestjs",
+    "payment"
   ],
   "publishConfig": {
     "access": "public"
