@@ -9,15 +9,22 @@
  *  Once you begin customizing ChapaModule, you'll probably want
  *  to delete this controller.
  */
-import { Controller, Get } from '@nestjs/common';
-import { ChapaService } from '../chapa.service';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { InitializeOptions } from '../chapa-sdk/interfaces/initialize.interface';
+import { VerifyOptions } from '../chapa-sdk/interfaces/verify.interface';
+import { ChapaService } from '../chapa-sdk/chapa.service';
 
 @Controller()
 export class ChapaClientController {
   constructor(private readonly chapaService: ChapaService) {}
 
-  @Get()
-  index() {
-    return this.chapaService.test();
+  @Post('initialize')
+  initialize(@Body() initializeOptions: InitializeOptions) {
+    return this.chapaService.initialize(initializeOptions);
+  }
+
+  @Get('verify/:tx_ref')
+  verify(@Param() verifyOptions: VerifyOptions) {
+    return this.chapaService.verify(verifyOptions);
   }
 }

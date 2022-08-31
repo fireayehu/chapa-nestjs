@@ -4,9 +4,9 @@
   "description": "Chapa SDK for NestJS",
   "author": "Fireayehu Zekarias<fireayehuzekarias@gmail.com>",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/chapa-sdk/index.js",
   "scripts": {
-    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/main.js\"",
+    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/chapa-client/main.js\"",
     "build": "tsc",
     "prepare": "npm run build",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -26,7 +26,8 @@
     "@nestjs/common": "^9.0.11"
   },
   "dependencies": {
-    "@nestjs/axios": "^0.1.0"
+    "@nestjs/axios": "^0.1.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@nestjs/common": "^9.0.11",

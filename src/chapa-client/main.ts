@@ -4,7 +4,7 @@
  *  you can run the quick verification test (see chapa-client/chapa-client.module.ts)
  */
 import { NestFactory } from '@nestjs/core';
-import { ChapaClientModule } from './chapa-client/chapa-client.module';
+import { ChapaClientModule } from './chapa-client.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ChapaClientModule);
