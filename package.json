@@ -1,5 +1,5 @@
 {
-  "name": "@chapa/nestjs",
+  "name": "chapa-nestjs",
   "version": "1.0.0",
   "description": "Chapa SDK for NestJS",
   "author": "Fireayehu Zekarias<fireayehuzekarias@gmail.com>",

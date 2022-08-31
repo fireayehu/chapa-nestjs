@@ -17,13 +17,13 @@
 **NPM**
 
 ```bash
-$ npm i -s @chapa/nestjs
+$ npm i -s chapa-nestjs
 ```
 
 **Yarn**
 
 ```bash
-$ yarn add @chapa/nestjs
+$ yarn add chapa-nestjs
 ```
 
 ## Getting started
@@ -36,7 +36,7 @@ Once the installation process is complete, we can import the module either synch
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { ChapaModule } from '@chapa/nestjs';
+import { ChapaModule } from 'chapa-nestjs';
 
 @Module({
   imports: [
@@ -56,7 +56,7 @@ In this example, the module integrates with the awesome [@nestjs/config](https:/
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { ChapaModule } from '@chapa/nestjs';
+import { ChapaModule } from 'chapa-nestjs';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -178,4 +178,4 @@ interface VerifyResponse {
 
 ## License
 
-@chapa/nestjs `MIT` License is Pending
+chapa-nestjs `MIT` License is Pending
