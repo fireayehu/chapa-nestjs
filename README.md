@@ -178,4 +178,4 @@ interface VerifyResponse {
 
 ## License
 
-chapa-nestjs `MIT` License is Pending
+chapa-nestjs is [MIT licensed](LICENSE).
