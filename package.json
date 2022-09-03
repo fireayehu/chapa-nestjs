@@ -38,6 +38,8 @@
   },
   "dependencies": {
     "@nestjs/axios": "^0.1.0",
+    "nanoid": "^3.0.0",
+    "nanoid-dictionary": "^4.3.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

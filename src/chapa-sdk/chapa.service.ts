@@ -5,9 +5,12 @@ import {
   HttpException,
   BadRequestException,
 } from '@nestjs/common';
+import { customAlphabet } from 'nanoid/async';
+import { alphanumeric } from 'nanoid-dictionary';
 import { CHAPA_OPTIONS } from './constants';
 import { ChapaUrls } from './enums/chapa-urls.enum';
 import { ChapaOptions } from './interfaces';
+import { GenerateTransactionReferenceOptions } from './interfaces/generate-transaction-reference.interface';
 import {
   InitializeOptions,
   InitializeResponse,
@@ -24,7 +27,10 @@ import { validateVerifyOptions } from './validations/verify.validation';
  */
 interface IChapaService {
   initialize(initializeOptions: InitializeOptions): Promise<InitializeResponse>;
-  verify(VerifyOptions: VerifyOptions): Promise<VerifyResponse>;
+  verify(verifyOptions: VerifyOptions): Promise<VerifyResponse>;
+  generateTransactionReference(
+    generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
+  ): Promise<string>;
 }
 
 @Injectable()
@@ -94,5 +100,22 @@ export class ChapaService implements IChapaService {
         throw error;
       }
     }
+  }
+  async generateTransactionReference(
+    generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
+  ): Promise<string> {
+    const prefix =
+      generateTransactionReferenceOptions &&
+      generateTransactionReferenceOptions.prefix
+        ? generateTransactionReferenceOptions.prefix
+        : 'tx';
+    const size =
+      generateTransactionReferenceOptions &&
+      generateTransactionReferenceOptions.size
+        ? generateTransactionReferenceOptions.size
+        : 15;
+    const nanoid = customAlphabet(alphanumeric, size);
+    const reference = await nanoid();
+    return `${prefix}-${reference}`;
   }
 }
