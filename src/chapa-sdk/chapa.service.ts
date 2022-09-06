@@ -8,17 +8,23 @@ import {
 import { customAlphabet } from 'nanoid/async';
 import { alphanumeric } from 'nanoid-dictionary';
 import { CHAPA_OPTIONS } from './constants';
-import { ChapaUrls } from './enums/chapa-urls.enum';
-import { ChapaOptions } from './interfaces';
-import { GenerateTransactionReferenceOptions } from './interfaces/generate-transaction-reference.interface';
+import { ChapaUrls } from './enums';
 import {
+  ChapaOptions,
+  CreateSubaccountOptions,
+  CreateSubaccountResponse,
+  GenerateTransactionReferenceOptions,
+  GetBanksResponse,
   InitializeOptions,
   InitializeResponse,
-} from './interfaces/initialize.interface';
-import { VerifyOptions, VerifyResponse } from './interfaces/verify.interface';
-import { validateInitializeOptions } from './validations/initialize.validation';
-import { validateVerifyOptions } from './validations/verify.validation';
-import { GetBanksResponse } from './interfaces/get-banks.interface';
+  VerifyOptions,
+  VerifyResponse,
+} from './interfaces';
+import {
+  validateCreateSubaccountOptions,
+  validateInitializeOptions,
+  validateVerifyOptions,
+} from './validations';
 
 /**
  * Interface for ChapaService
@@ -33,6 +39,9 @@ interface IChapaService {
     generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
   ): Promise<string>;
   getBanks(): Promise<GetBanksResponse>;
+  createSubAccount(
+    createSubaccountOptions: CreateSubaccountOptions,
+  ): Promise<CreateSubaccountResponse>;
 }
 
 @Injectable()
@@ -134,5 +143,35 @@ export class ChapaService implements IChapaService {
       },
     );
     return banks.data;
+  }
+
+  async createSubAccount(
+    createSubaccountOptions: CreateSubaccountOptions,
+  ): Promise<CreateSubaccountResponse> {
+    try {
+      await validateCreateSubaccountOptions(createSubaccountOptions);
+      const response =
+        await this.httpService.axiosRef.post<CreateSubaccountResponse>(
+          ChapaUrls.SUBACCOUNT,
+          createSubaccountOptions,
+          {
+            headers: {
+              Authorization: `Bearer ${this.chapaOptions.secretKey}`,
+            },
+          },
+        );
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new HttpException(
+          error.response.data.message,
+          error.response.status,
+        );
+      } else if (error.name === 'ValidationError') {
+        throw new BadRequestException(error.errors[0]);
+      } else {
+        throw error;
+      }
+    }
   }
 }

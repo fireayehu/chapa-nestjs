@@ -13,6 +13,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InitializeOptions } from '../chapa-sdk/interfaces/initialize.interface';
 import { VerifyOptions } from '../chapa-sdk/interfaces/verify.interface';
 import { ChapaService } from '../chapa-sdk/chapa.service';
+import { CreateSubaccountOptions } from 'src/chapa-sdk';
 
 @Controller()
 export class ChapaClientController {
@@ -30,5 +31,10 @@ export class ChapaClientController {
   @Get('verify/:tx_ref')
   verify(@Param() verifyOptions: VerifyOptions) {
     return this.chapaService.verify(verifyOptions);
+  }
+
+  @Post('subaccount')
+  createSubaccount(@Body() createSubaccountOptions: CreateSubaccountOptions) {
+    return this.chapaService.createSubAccount(createSubaccountOptions);
   }
 }
