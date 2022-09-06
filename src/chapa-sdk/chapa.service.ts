@@ -18,6 +18,7 @@ import {
 import { VerifyOptions, VerifyResponse } from './interfaces/verify.interface';
 import { validateInitializeOptions } from './validations/initialize.validation';
 import { validateVerifyOptions } from './validations/verify.validation';
+import { GetBanksResponse } from './interfaces/get-banks.interface';
 
 /**
  * Interface for ChapaService
@@ -31,6 +32,7 @@ interface IChapaService {
   generateTransactionReference(
     generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
   ): Promise<string>;
+  getBanks(): Promise<GetBanksResponse>;
 }
 
 @Injectable()
@@ -47,6 +49,7 @@ export class ChapaService implements IChapaService {
     @Inject(CHAPA_OPTIONS) private chapaOptions: ChapaOptions,
     private readonly httpService: HttpService,
   ) {}
+
   async initialize(
     initializeOptions: InitializeOptions,
   ): Promise<InitializeResponse> {
@@ -76,6 +79,7 @@ export class ChapaService implements IChapaService {
       }
     }
   }
+
   async verify(verifyOptions: VerifyOptions): Promise<VerifyResponse> {
     try {
       await validateVerifyOptions(verifyOptions);
@@ -101,6 +105,7 @@ export class ChapaService implements IChapaService {
       }
     }
   }
+
   async generateTransactionReference(
     generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
   ): Promise<string> {
@@ -117,5 +122,17 @@ export class ChapaService implements IChapaService {
     const nanoid = customAlphabet(alphanumeric, size);
     const reference = await nanoid();
     return `${prefix}-${reference}`;
+  }
+
+  async getBanks(): Promise<GetBanksResponse> {
+    const banks = await this.httpService.axiosRef.get<GetBanksResponse>(
+      ChapaUrls.BANKS,
+      {
+        headers: {
+          Authorization: `Bearer ${this.chapaOptions.secretKey}`,
+        },
+      },
+    );
+    return banks.data;
   }
 }
