@@ -19,8 +19,12 @@ export class ChapaClientController {
   constructor(private readonly chapaService: ChapaService) {}
 
   @Post('initialize')
-  initialize(@Body() initializeOptions: InitializeOptions) {
-    return this.chapaService.initialize(initializeOptions);
+  async initialize(@Body() initializeOptions: InitializeOptions) {
+    const tx_ref = await this.chapaService.generateTransactionReference();
+    return this.chapaService.initialize({
+      ...initializeOptions,
+      tx_ref,
+    });
   }
 
   @Get('verify/:tx_ref')

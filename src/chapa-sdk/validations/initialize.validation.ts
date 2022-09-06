@@ -12,8 +12,14 @@ export const validateInitializeOptions = async (
     amount: yup.string().required(),
     tx_ref: yup.string().required(),
     callback_url: yup.string().url().optional(),
-    'customization[title]': yup.string().optional(),
-    'customization[description]': yup.string().optional(),
+    customization: yup
+      .object()
+      .shape({
+        title: yup.string().optional(),
+        description: yup.string().optional(),
+        logo: yup.string().optional(),
+      })
+      .optional(),
   });
 
   return await schema.validate(initializeOptions);
