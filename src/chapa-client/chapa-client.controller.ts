@@ -35,6 +35,6 @@ export class ChapaClientController {
 
   @Post('subaccount')
   createSubaccount(@Body() createSubaccountOptions: CreateSubaccountOptions) {
-    return this.chapaService.createSubAccount(createSubaccountOptions);
+    return this.chapaService.createSubaccount(createSubaccountOptions);
   }
 }
