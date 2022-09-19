@@ -17,15 +17,12 @@ import {
   GetBanksResponse,
   InitializeOptions,
   InitializeResponse,
-  InitializeSplitPaymentOptions,
-  InitializeSplitPaymentResponse,
   VerifyOptions,
   VerifyResponse,
 } from './interfaces';
 import {
   validateCreateSubaccountOptions,
   validateInitializeOptions,
-  validateInitializeSplitPaymentOptions,
   validateVerifyOptions,
 } from './validations';
 
@@ -45,9 +42,6 @@ interface IChapaService {
   createSubaccount(
     createSubaccountOptions: CreateSubaccountOptions,
   ): Promise<CreateSubaccountResponse>;
-  initializeSplitPayment(
-    initializeSplitPaymentOptions: InitializeSplitPaymentOptions,
-  ): Promise<InitializeSplitPaymentResponse>;
 }
 
 @Injectable()
@@ -171,38 +165,6 @@ export class ChapaService implements IChapaService {
         await this.httpService.axiosRef.post<CreateSubaccountResponse>(
           ChapaUrls.SUBACCOUNT,
           createSubaccountOptions,
-          {
-            headers: {
-              Authorization: `Bearer ${this.chapaOptions.secretKey}`,
-            },
-          },
-        );
-      return response.data;
-    } catch (error) {
-      if (error.response) {
-        throw new HttpException(
-          error.response.data.message,
-          error.response.status,
-        );
-      } else if (error.name === 'ValidationError') {
-        throw new BadRequestException(error.errors[0]);
-      } else {
-        throw error;
-      }
-    }
-  }
-  async initializeSplitPayment(
-    initializeSplitPaymentOptions: InitializeSplitPaymentOptions,
-  ): Promise<InitializeSplitPaymentResponse> {
-    try {
-      await validateInitializeSplitPaymentOptions(
-        initializeSplitPaymentOptions,
-      );
-
-      const response =
-        await this.httpService.axiosRef.post<InitializeSplitPaymentResponse>(
-          ChapaUrls.INITIALIZE,
-          initializeSplitPaymentOptions,
           {
             headers: {
               Authorization: `Bearer ${this.chapaOptions.secretKey}`,
