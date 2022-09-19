@@ -122,7 +122,7 @@ export class ChapaService implements IChapaService {
       generateTransactionReferenceOptions &&
       generateTransactionReferenceOptions.prefix
         ? generateTransactionReferenceOptions.prefix
-        : 'tx';
+        : 'TX';
     const size =
       generateTransactionReferenceOptions &&
       generateTransactionReferenceOptions.size
@@ -130,7 +130,7 @@ export class ChapaService implements IChapaService {
         : 15;
     const nanoid = customAlphabet(alphanumeric, size);
     const reference = await nanoid();
-    return `${prefix}-${reference}`;
+    return `${prefix}-${reference.toUpperCase()}`;
   }
 
   async getBanks(): Promise<GetBanksResponse> {
