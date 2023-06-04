@@ -34,6 +34,9 @@ import {
  */
 interface IChapaService {
   initialize(initializeOptions: InitializeOptions): Promise<InitializeResponse>;
+  mobileInitialize(
+    initializeOptions: InitializeOptions,
+  ): Promise<InitializeResponse>;
   verify(verifyOptions: VerifyOptions): Promise<VerifyResponse>;
   generateTransactionReference(
     generateTransactionReferenceOptions?: GenerateTransactionReferenceOptions,
@@ -67,6 +70,36 @@ export class ChapaService implements IChapaService {
 
       const response = await this.httpService.axiosRef.post<InitializeResponse>(
         ChapaUrls.INITIALIZE,
+        initializeOptions,
+        {
+          headers: {
+            Authorization: `Bearer ${this.chapaOptions.secretKey}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new HttpException(
+          error.response.data.message,
+          error.response.status,
+        );
+      } else if (error.name === 'ValidationError') {
+        throw new BadRequestException(error.errors[0]);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  async mobileInitialize(
+    initializeOptions: InitializeOptions,
+  ): Promise<InitializeResponse> {
+    try {
+      await validateInitializeOptions(initializeOptions);
+
+      const response = await this.httpService.axiosRef.post<InitializeResponse>(
+        ChapaUrls.MOBILE_INITIALIZE,
         initializeOptions,
         {
           headers: {

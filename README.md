@@ -3,7 +3,7 @@
   <a href="https://chapa.co/" target="_blank">
     <img src="./docs/logo.png" width="320" alt="Nest Logo"/>
   </a>
-  <p align="center">NestJS package for chapa</p>
+  <p align="center">NestJS sdk for chapa</p>
 </div>
 </h1>
 
@@ -99,13 +99,33 @@ const tx_ref = await this.chapaService.generateTransactionReference({
 
 ### Initialize Transaction
 
-To initialize a transaction, simply call the `initialize` method from `ChapaService` instance, and pass to it `InitializeOptions` options.
+To initialize a transaction, we have two possilbe ways. The first one is for web payment, simply call the `initialize` method from `ChapaService` instance, and pass to it `InitializeOptions` options. For mobile payment use `mobileInitialize`, it accepts and returns the same format as the `initialize` method.
 
 ```typescript
 // Generate transaction reference using our utility method or provide your own
 const tx_ref = await this.chapaService.generateTransactionReference();
 
 const response = await this.chapaService.initialize({
+  first_name: 'John',
+  last_name: 'Doe',
+  email: 'john@gmail.com',
+  currency: 'ETB',
+  amount: '200',
+  tx_ref: tx_ref,
+  callback_url: 'https://example.com/',
+  return_url: 'https://example.com/',
+  customization: {
+    title: 'Test Title',
+    description: 'Test Description',
+  },
+});
+```
+
+```typescript
+// Generate transaction reference using our utility method or provide your own
+const tx_ref = await this.chapaService.generateTransactionReference();
+
+const response = await this.chapaService.mobileInitialize({
   first_name: 'John',
   last_name: 'Doe',
   email: 'john@gmail.com',
